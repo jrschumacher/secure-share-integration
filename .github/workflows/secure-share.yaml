@@ -23,7 +23,8 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
-            const comment = github.event.comment.body.substring(0, command.length)
+            const comment = context.body
+            const cleanComment = comment.substring(0, command.length)
 
             const {number: issue_number, owner, repo} = context.issue
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
