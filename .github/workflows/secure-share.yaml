@@ -22,10 +22,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log(context)
+            // Keep for debugging
+            // console.log(context)
+
             const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
 
-            const {number: issue_number, owner, repo} = context.issue
+            const { actor, payload: { comment } } = context
+            const { number: issue_number, owner, repo } = context.issue
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
             const regexp = /^\/virtru request\s+([^@]+@[^\s]+)\s+(@[a-zA-Z0-9_-]+)/
 
@@ -33,7 +36,7 @@ jobs:
             // Parse Message
             let email = ''
             let from = ''
-            const match = regexp.exec(context.body);
+            const match = regexp.exec(comment.body);
             if (match) {
               email = match[1];
               from = match[2];
@@ -50,7 +53,7 @@ jobs:
 
             // Success and failure messages
             if (email && from) {
-              createComment(`@${ from } you have been asked to securely share data with ${ context.author }. Please use this url ${ makeLink(email) }`)
+              createComment(`@${ from } you have been asked to securely share data with ${ actor }. Please use this url ${ makeLink(email) }`)
             } else {
-              createComment(`:no_entry: @${ context.author } please use the format \`/virtru request <your email> <requesting username>\``)
+              createComment(`:no_entry: @${ actor } please use the format \`/virtru request <your email> <requesting username>\``)
             }
