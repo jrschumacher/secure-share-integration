@@ -22,11 +22,11 @@ jobs:
             const regexp = /^\/virtru request\s+([^@]+@[^\s]+)\s+(@[a-zA-Z0-9_-]+)/
 
             function link(email) {
-              const link = `${ baseUrl }/${ email }?ch=github&oid=${ context.repository }#${ issue_number }`
+              return `${ baseUrl }/${ email }?ch=github&oid=${ context.repository }#${ issue_number }`
             }
 
-            func comment(body, email) {
-              github.rest.issues.createComment({ issue_number owner, repo, body })
+            function comment(body) {
+              github.rest.issues.createComment({ issue_number, owner, repo, body })
             }
 
             // Parse Message
