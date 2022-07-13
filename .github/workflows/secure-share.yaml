@@ -40,17 +40,17 @@ jobs:
             }
 
             // Fns
-            function link(email) {
+            function makeLink(email) {
               return `${ baseUrl }/${ email }?ch=github&oid=${ context.repository }#${ issue_number }`
             }
 
-            function comment(body) {
+            function createComment(body) {
               github.rest.issues.createComment({ issue_number, owner, repo, body })
             }
 
             // Success and failure messages
             if (email && from) {
-              comment(`@${ from } you have been asked to securely share data with ${ context.author }. Please use this url ${ link(email) }`)
+              createComment(`@${ from } you have been asked to securely share data with ${ context.author }. Please use this url ${ makeLink(email) }`)
             } else {
-              comment(`:no_entry: @${ context.author } please use the format \`/virtru request <your email> <requesting username>\``)
+              createComment(`:no_entry: @${ context.author } please use the format \`/virtru request <your email> <requesting username>\``)
             }
