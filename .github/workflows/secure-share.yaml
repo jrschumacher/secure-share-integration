@@ -17,9 +17,11 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const {owner, repo} = context.issue
+            const link = `https://secure.develop.virtru.com/secure-share?ch=github&oid=${ context.repository }#${ context.issue.number }`
+            const msg = `@${ context.actor } would like you to securely share data with them. Please use ${link}`
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '@{{ context.actor }} would like you to securely share data with them. Please use https://secure.develop.virtru.com/secure-share/{{ context.actor }}?ch=github&oid={{ context.repository }}#{{ context.issue.number }}'
+              body: msg
             })
