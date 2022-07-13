@@ -24,7 +24,7 @@ jobs:
           script: |
             const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
             const comment = context.body
-            const cleanComment = comment.substring(0, command.length)
+            const cleanComment = comment.replace(new RegExp(`^${command}`), '')
 
             const {number: issue_number, owner, repo} = context.issue
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
@@ -34,7 +34,7 @@ jobs:
             // Parse Message
             let email = ''
             let from = ''
-            const match = regexp.exec(comment);
+            const match = regexp.exec(cleanComment);
             if (match) {
               email = match[1];
               from = match[2];
