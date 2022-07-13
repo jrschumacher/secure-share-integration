@@ -13,10 +13,11 @@ env:
 jobs:
   issue_comment:
     name: Issue Comment
-    if: ${{ startsWith(github.event.comment.body, '/virtru request') }}
+    if: ${{ startsWith(github.event.comment.body, '/virtru') }}
     runs-on: ubuntu-latest
     steps:
       - name: Virtru - Request data
+        if: ${{ startsWith(github.event.comment.body, '/virtru request') }}
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
