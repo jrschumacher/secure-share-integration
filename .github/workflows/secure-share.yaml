@@ -18,10 +18,11 @@ jobs:
     steps:
       - name: Virtru - Request data
         if: ${{ startsWith(github.event.comment.body, '/virtru request') }}
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log(context)
             const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
 
             const {number: issue_number, owner, repo} = context.issue
