@@ -10,18 +10,38 @@ jobs:
   issue_comment:
     name: Issue Comment
     runs-on: ubuntu-latest
-    if: startsWith(${{ github.event.comment.body }}, '/virtru request')
     steps:
-      - uses: actions/github-script@v5
+      - name: Virtru - Request data
+        uses: actions/github-script@v5
+        if: startsWith(${{ github.event.comment.body }}, '/virtru request')
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const {owner, repo} = context.issue
-            const link = `https://secure.develop.virtru.com/secure-share?ch=github&oid=${ context.repository }#${ context.issue.number }`
-            const msg = `@${ context.actor } would like you to securely share data with them. Please use ${link}`
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: msg
-            })
+            const {number: issue_number, owner, repo} = context.issue
+            const baseUrl = 'https://secure.develop.virtru.com/secure-share'
+            const regexp = /^\/virtru request\s+([^@]+@[^\s]+)\s+(@[a-zA-Z0-9_-]+)/
+
+            function link(email) {
+              const link = `${ baseUrl }/${ email }?ch=github&oid=${ context.repository }#${ issue_number }`
+            }
+
+            func comment(body, email) {
+              github.rest.issues.createComment({ issue_number owner, repo, body })
+            }
+
+            // Parse Message
+
+            let email = ''
+            let from = ''
+            const match = regexp.exec(context.body);
+            if (match) {
+              email = match[1];
+              from = match[2];
+            }
+
+            // Success and failure messages
+            if (email && from) {
+              comment(`@${ from } you have been asked to securely share data with ${ context.author }. Please use this url ${ link(email) }`)
+            } else {
+              comment(`:no_entry: @${ from } please use the format \`/virtru request <your email> <requesting username>\``)
+            }
