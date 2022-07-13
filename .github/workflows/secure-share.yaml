@@ -1,0 +1,25 @@
+name: Secure Share Integration
+
+on:
+  issue_comment:
+    types: [created]
+
+# github.event.issue.number
+
+jobs:
+  issue_comment:
+    name: Issue Comment
+    runs-on: ubuntu-latest
+    if: startsWith(${{ github.event.comment.body }}, '/virtru request')
+    steps:
+      - uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const {owner, repo} = context.issue
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '@${{ context.actor }} would like you to securely share data with them. Please use https://secure.develop.virtru.com/secure-share/${{ context.actor }}?ch=github&oid=${{ context.repository }}#${{ context.issue.number }}'
+            })
