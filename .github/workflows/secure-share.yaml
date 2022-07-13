@@ -60,6 +60,6 @@ jobs:
             } catch(err) {
               createComment(
                 `:no_entry: @${ actor } please use the format \`${ command } <your email> <requesting username>\`\n\n` +
-                '```Error: ${err.message}```' +
+                '```Error: ${err.message}```'
               )
             }
