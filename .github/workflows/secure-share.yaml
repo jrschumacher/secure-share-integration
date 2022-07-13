@@ -27,33 +27,39 @@ jobs:
 
             const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
 
-            const { actor, payload: { comment } } = context
+            const { actor, repository, payload: { comment } } = context
             const { number: issue_number, owner, repo } = context.issue
+
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
-            const regexp = /^\/virtru request\s+([^@]+@[^\s]+)\s+(@[a-zA-Z0-9_-]+)/
-
-
-            // Parse Message
-            let email = ''
-            let from = ''
-            const match = regexp.exec(comment.body);
-            if (match) {
-              email = match[1];
-              from = match[2];
-            }
-
-            // Fns
-            function makeLink(email) {
-              return `${ baseUrl }/${ email }?ch=github&oid=${ context.repository }#${ issue_number }`
-            }
 
             function createComment(body) {
               github.rest.issues.createComment({ issue_number, owner, repo, body })
             }
 
-            // Success and failure messages
-            if (email && from) {
-              createComment(`@${ from } you have been asked to securely share data with ${ actor }. Please use this url ${ makeLink(email) }`)
-            } else {
-              createComment(`:no_entry: @${ actor } please use the format \`/virtru request <your email> <requesting username>\``)
+            try {
+              const args = comment.body.substring(0, command.length).split(' ')
+
+              if (args.length !== 2) {
+                throw new Error('Invalid number of arguments')
+              }
+              const email = args[0]
+              const from = args[1]
+
+              if (!/^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.(xn--)?([a-z0-9\-]{1,61}|[a-z0-9-]{1,30}\.[a-z]{2,})$/.test(email)) {
+                throw new Error('Invalid email address')
+              }
+
+              if (!/^@[a-zA-Z0-9_-]) {
+                throw new Error('Invalid github username')
+              }
+
+              const link = `${ baseUrl }/${ email }?ch=github&oid=${ repository.full_name }#${ issue_number }`
+
+              // Success and failure messages
+              createComment(`@${ from } you have been asked to securely share data with ${ actor }. Please use this url ${ link }`)
+            } catch(err) {
+              createComment([
+                'Error: `${err.message}`\n' +
+                `:no_entry: @${ actor } please use the format \`${ command } <your email> <requesting username>\``
+              ])
             }
