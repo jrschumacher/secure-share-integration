@@ -29,6 +29,9 @@ jobs:
 
             const { actor, repository, payload: { comment } } = context
             const { number: issue_number, owner, repo } = context.issue
+            console.log('Context', {
+              actor, repository, comment
+            })
 
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
 
