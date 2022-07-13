@@ -13,10 +13,14 @@ jobs:
     steps:
       - name: Virtru - Request data
         uses: actions/github-script@v5
-        if: ${{ startsWith({{ github.event.comment.body }}, '/virtru request') }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const command = '/virtru request'
+            if (context.body.substring(0, command.length) !== command) {
+              return
+            }
+
             const {number: issue_number, owner, repo} = context.issue
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
             const regexp = /^\/virtru request\s+([^@]+@[^\s]+)\s+(@[a-zA-Z0-9_-]+)/
