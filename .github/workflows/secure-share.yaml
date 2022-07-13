@@ -25,7 +25,7 @@ jobs:
             // Keep for debugging
             // console.log(context)
 
-            const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
+            const command = `${ github.env.CMD } ${ github.env.CMD_REQ }`
 
             const { actor, repository, payload: { comment } } = context
             const { number: issue_number, owner, repo } = context.issue
@@ -60,6 +60,6 @@ jobs:
             } catch(err) {
               createComment(
                 `:no_entry: @${ actor } please use the format \`${ command } <your email> <requesting username>\`\n\n` +
-                '```Error: ${err.message}```'
+                `\`\`\`Error: ${err.message}\`\`\``
               )
             }
