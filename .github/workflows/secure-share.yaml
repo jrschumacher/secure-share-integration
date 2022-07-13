@@ -37,8 +37,7 @@ jobs:
             }
 
             try {
-              // add one for space
-              const args = comment.body.substring(0, command.length + 1).split(' ')
+              const args = comment.body.substring(0, command.length).trim().split(' ')
 
               if (args.length !== 2) {
                 throw new Error('Invalid number of arguments')
