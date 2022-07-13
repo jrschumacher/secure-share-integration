@@ -59,7 +59,9 @@ jobs:
               createComment(`@${ toUsername } you have been asked to securely share data with ${ actor }. Please use this url ${ link }`)
             } catch(err) {
               createComment(
-                `:no_entry: @${ actor } please use the format \`${ command } <your email> <requesting username>\`\n\n` +
-                `\`\`\`Error: ${err.message}\`\`\``
+                `Virtru Secure Share\n` +
+                `-------------------\n\n` +
+                `\`\`\`Error: ${err.message}\`\`\`\n\n` +
+                `@${ actor } please use the format \`${ command } <your email> <requesting username>\``
               )
             }
