@@ -38,6 +38,7 @@ jobs:
 
             try {
               const args = comment.body.substring(0, command.length).trim().split(' ')
+              console.log('Args', args)
 
               if (args.length !== 2) {
                 throw new Error('Invalid number of arguments')
