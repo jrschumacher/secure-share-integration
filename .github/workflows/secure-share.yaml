@@ -21,5 +21,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '@${{ context.actor }} would like you to securely share data with them. Please use https://secure.develop.virtru.com/secure-share/${{ context.actor }}?ch=github&oid=${{ context.repository }}#${{ context.issue.number }}'
+              body: '@{{ context.actor }} would like you to securely share data with them. Please use https://secure.develop.virtru.com/secure-share/{{ context.actor }}?ch=github&oid={{ context.repository }}#{{ context.issue.number }}'
             })
