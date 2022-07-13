@@ -37,7 +37,8 @@ jobs:
             }
 
             try {
-              const args = comment.body.substring(0, command.length).split(' ')
+              // add one for space
+              const args = comment.body.substring(0, command.length + 1).split(' ')
 
               if (args.length !== 2) {
                 throw new Error('Invalid number of arguments')
@@ -59,7 +60,7 @@ jobs:
               createComment(`@${ toUsername } you have been asked to securely share data with ${ actor }. Please use this url ${ link }`)
             } catch(err) {
               createComment(
-                `@${ actor } invalid use of command. Eg. \`${ command } ${ actor }@example.com @${ actor }\`\n\n` +
+                `@${ actor } invalid use of command. Eg. \`${ command } <your-email> <their-github-username>\`\n\n` +
                 '---\n' +
                 '```\n' +
                 `> ${ comment.body }\n\n` +
