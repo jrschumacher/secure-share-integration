@@ -23,26 +23,29 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
+            const comment = context.body.substring(0, command.length)
+
             const {number: issue_number, owner, repo} = context.issue
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
             const regexp = /^\/virtru request\s+([^@]+@[^\s]+)\s+(@[a-zA-Z0-9_-]+)/
 
+
+            // Parse Message
+            let email = ''
+            let from = ''
+            const match = regexp.exec(comment);
+            if (match) {
+              email = match[1];
+              from = match[2];
+            }
+
+            // Fns
             function link(email) {
               return `${ baseUrl }/${ email }?ch=github&oid=${ context.repository }#${ issue_number }`
             }
 
             function comment(body) {
               github.rest.issues.createComment({ issue_number, owner, repo, body })
-            }
-
-            // Parse Message
-
-            let email = ''
-            let from = ''
-            const match = regexp.exec(context.body);
-            if (match) {
-              email = match[1];
-              from = match[2];
             }
 
             // Success and failure messages
