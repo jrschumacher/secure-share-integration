@@ -61,10 +61,10 @@ jobs:
               createComment(
                 `@${ actor } invalid use of command. Eg. \`${ command } ${ actor }@example.com @${ actor }\`\n\n` +
                 '---\n' +
-                '```' +
+                '```\n' +
                 `> ${ comment.body }\n\n` +
-                `error: ${err.message}` +
-                '```\n\n'
+                `error: ${err.message}\n` +
+                '```'
                 
               )
             }
