@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Virtru - Request data
         uses: actions/github-script@v5
-        if: startsWith(${{ github.event.comment.body }}, '/virtru request')
+        if: ${{ startsWith(${{ github.event.comment.body }}, '/virtru request') }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -43,5 +43,5 @@ jobs:
             if (email && from) {
               comment(`@${ from } you have been asked to securely share data with ${ context.author }. Please use this url ${ link(email) }`)
             } else {
-              comment(`:no_entry: @${ from } please use the format \`/virtru request <your email> <requesting username>\``)
+              comment(`:no_entry: @${ context.author } please use the format \`/virtru request <your email> <requesting username>\``)
             }
