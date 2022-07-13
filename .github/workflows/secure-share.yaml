@@ -62,7 +62,7 @@ jobs:
                 `@${ actor } invalid use of command. Eg. \`${ command } ${ actor }@example.com @${ actor }\`\n\n` +
                 '---\n' +
                 '```' +
-                `> ${ comment }` +
+                `> ${ comment.body }\n\n` +
                 `error: ${err.message}` +
                 '```\n\n'
                 
