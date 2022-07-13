@@ -6,9 +6,14 @@ on:
 
 # github.event.issue.number
 
+env:
+  CMD: /virtru
+  CMD_REQ: request
+
 jobs:
   issue_comment:
     name: Issue Comment
+    if: ${{ startsWith(github.event.comment.body, '/virtru request') }}
     runs-on: ubuntu-latest
     steps:
       - name: Virtru - Request data
@@ -16,11 +21,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const command = '/virtru request'
-            if (new RegExp(`^${command}`).test(context.body)) {
-              return
-            }
-
+            const command = '${ github.env.CMD } ${ github.env.CMD_REQ }'
             const {number: issue_number, owner, repo} = context.issue
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
             const regexp = /^\/virtru request\s+([^@]+@[^\s]+)\s+(@[a-zA-Z0-9_-]+)/
