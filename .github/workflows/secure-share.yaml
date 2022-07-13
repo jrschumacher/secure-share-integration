@@ -17,7 +17,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const command = '/virtru request'
-            if (context.body.substring(0, command.length) !== command) {
+            if (new Regexp(`^${command}`).test(context.body)) {
               return
             }
 
