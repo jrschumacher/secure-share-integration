@@ -27,11 +27,8 @@ jobs:
 
             const command = `${ process.env.CMD } ${ process.env.CMD_REQ }`
 
-            const { actor, repository, payload: { comment } } = context
+            const { actor, payload: { comment, repository } } = context
             const { number: issue_number, owner, repo } = context.issue
-            console.log('Context', {
-              actor, repository, comment
-            })
 
             const baseUrl = 'https://secure.develop.virtru.com/secure-share'
 
