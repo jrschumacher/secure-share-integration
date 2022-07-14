@@ -74,7 +74,7 @@ jobs:
               }
               const email = args[0]
               const toUsername = args[1]
-              const opt = arg[3]
+              const opt = args[3]
 
               if (! /^(.+)@(.+)$/.test(email)) {
                 console.error('Invalid email address', `'${email}'`)
