@@ -74,7 +74,7 @@ jobs:
               }
               const email = args[0]
               const toUsername = args[1]
-              const opt = args[3]
+              const opt = args[2]
               
               console.log(email, toUsername, opt)
 
@@ -89,7 +89,7 @@ jobs:
 
               let link = `${ baseUrl }/${ email }`
 
-              if (!opt) {
+              if (opt !== 'email') {
                 link += `?ch=github&oid=${ repository.full_name }/${ issue_number }`
               }
 
