@@ -36,15 +36,42 @@ jobs:
               github.rest.issues.createComment({ issue_number, owner, repo, body })
             }
 
+            function commentHelp() {
+              createComment(
+                `@${ actor } see help\n` +
+                `\n` +
+                '---\n' +
+                `\n` +
+                '```\n' +
+                `Virtru request enables you to request data from another party securely.\n` +
+                `\n` +
+                `Usage:\n` +
+                `    \n` +
+                `    ${command} <your-email> <their-github-username> ['email']\n` +
+                `    \n` +
+                `    your-email: Enter the email address which you want the data sent to\n` +
+                `        E.g. bob@example.com\n` +
+                `    \n` +
+                `    their-github-username: Enter the person's github username you want to alert.\n` +
+                `        E.g. @bob\n` +
+                '```'
+              )
+            }
+
             try {
               const args = comment.body.substring(command.length).trim().split(' ')
               console.log('Args', args)
 
-              if (args.length !== 2) {
+              if (args.length === 1 && args[0] === 'help') {
+                return commentHelp()
+              }
+
+              if (args.length < 2) {
                 throw new Error('Invalid number of arguments')
               }
               const email = args[0]
               const toUsername = args[1]
+              const opt = arg[3]
 
               if (! /^(.+)@(.+)$/.test(email)) {
                 console.error('Invalid email address', `'${email}'`)
@@ -55,18 +82,21 @@ jobs:
                 throw new Error('Invalid github username')
               }
 
-              const link = `${ baseUrl }/${ email }?ch=github&oid=${ repository.full_name }#${ issue_number }`
+              let link = `${ baseUrl }/${ email }`
+
+              if (opt !== 'email') {
+                link += `?ch=github&oid=${ repository.full_name }/${ issue_number }`
+              }
 
               // Success and failure messages
               createComment(`${ toUsername } you have been asked to securely share data with ${ actor }. Please use this url ${ link }`)
             } catch(err) {
               createComment(
-                `@${ actor } invalid use of command. Eg. \`${ command } <your-email> <their-github-username>\`\n\n` +
+                `@${ actor } invalid use of command. Eg. \`${ command } <your-email> <their-github-username> [email]\`\n\n` +
                 '---\n' +
                 '```\n' +
                 `> ${ comment.body }\n\n` +
                 `error: ${err.message}\n` +
                 '```'
-                
               )
             }
