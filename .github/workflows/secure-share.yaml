@@ -30,7 +30,7 @@ jobs:
             const { actor, payload: { comment, repository } } = context
             const { number: issue_number, owner, repo } = context.issue
 
-            const baseUrl = 'https://secure.develop.virtru.com/secure-share'
+            const baseUrl = 'https://secure.virtru.com/secure-share'
 
             function createComment(body) {
               github.rest.issues.createComment({ issue_number, owner, repo, body })
