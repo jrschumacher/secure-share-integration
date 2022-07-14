@@ -47,13 +47,16 @@ jobs:
                 `\n` +
                 `Usage:\n` +
                 `    \n` +
-                `    ${command} <your-email> <their-github-username> ['email']\n` +
+                `    ${command} <your-email> <their-github-username> [options]\n` +
                 `    \n` +
                 `    your-email: Enter the email address which you want the data sent to\n` +
                 `        E.g. bob@example.com\n` +
                 `    \n` +
                 `    their-github-username: Enter the person's github username you want to alert.\n` +
                 `        E.g. @bob\n` +
+                `    \n` +
+                `    options: Alternate options.\n` +
+                `        - email: used to specify that you want to use basic email and not github integration to recieve data\n` +
                 '```'
               )
             }
