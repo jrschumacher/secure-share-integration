@@ -58,7 +58,7 @@ jobs:
               const link = `${ baseUrl }/${ email }?ch=github&oid=${ repository.full_name }#${ issue_number }`
 
               // Success and failure messages
-              createComment(`@${ toUsername } you have been asked to securely share data with ${ actor }. Please use this url ${ link }`)
+              createComment(`${ toUsername } you have been asked to securely share data with ${ actor }. Please use this url ${ link }`)
             } catch(err) {
               createComment(
                 `@${ actor } invalid use of command. Eg. \`${ command } <your-email> <their-github-username>\`\n\n` +
