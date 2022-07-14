@@ -75,6 +75,8 @@ jobs:
               const email = args[0]
               const toUsername = args[1]
               const opt = args[3]
+              
+              console.log(email, toUsername, opt)
 
               if (! /^(.+)@(.+)$/.test(email)) {
                 console.error('Invalid email address', `'${email}'`)
@@ -87,7 +89,7 @@ jobs:
 
               let link = `${ baseUrl }/${ email }`
 
-              if (opt !== 'email') {
+              if (!opt) {
                 link += `?ch=github&oid=${ repository.full_name }/${ issue_number }`
               }
 
