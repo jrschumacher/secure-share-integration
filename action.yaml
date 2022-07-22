@@ -1,0 +1,11 @@
+name: 'Virtru Secure Share'
+author: 'Ryan Schumacher'
+description: 'Enable /virtru commands in Github'
+inputs:
+  env:  # id of input
+    description: 'Environment which to connect to'
+    required: false
+    default: ''
+runs:
+  using: 'node16'
+  main: 'index.js'
